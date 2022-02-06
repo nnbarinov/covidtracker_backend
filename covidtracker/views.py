@@ -1,14 +1,20 @@
-from rest_framework.viewsets import ModelViewSet
+import requests
 import covidtracker
 from covidtracker.models import covid_data
 from covidtracker.serialaizers import covid_dataSerialaizer
-import requests
+from rest_framework.viewsets import ModelViewSet
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend #, OrderingFilter
+from rest_framework.filters import OrderingFilter
+
 
 # Create your views here.
 class covid_dataViewSet(ModelViewSet):
     queryset = covid_data.objects.all()
     serializer_class = covid_dataSerialaizer
+    filter_backends  = [DjangoFilterBackend, OrderingFilter]
+    filter_fields = ['country_code']
+    ordering_fields = ['date_value']
 
 """ def get_covid_data(request):
     all_covid_data = {}
