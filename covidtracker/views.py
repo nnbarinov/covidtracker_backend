@@ -1,7 +1,7 @@
 import requests
 import covidtracker
-from covidtracker.models import covid_data
-from covidtracker.serialaizers import covid_dataSerialaizer
+from covidtracker.models import covid_data, Countries
+from covidtracker.serialaizers import covid_dataSerialaizer, CountriesSerialaizer
 from rest_framework.viewsets import ModelViewSet
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend #, OrderingFilter
@@ -15,6 +15,14 @@ class covid_dataViewSet(ModelViewSet):
     filter_backends  = [DjangoFilterBackend, OrderingFilter]
     filter_fields = ['country_code']
     ordering_fields = ['date_value']
+
+class CountriesViewSet(ModelViewSet):
+    queryset = Countries.objects.all()
+    serializer_class = CountriesSerialaizer
+    filter_backends  = [DjangoFilterBackend, OrderingFilter]
+    filter_fields = ['country_name']
+    ordering_fields = ['country_name']
+
 
 """ def get_covid_data(request):
     all_covid_data = {}

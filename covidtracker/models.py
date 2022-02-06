@@ -1,6 +1,10 @@
 from django.db import models
 
 # Create your models here.
+class Countries(models.Model):
+    country_code = models.CharField(max_length=4)
+    country_name = models.CharField(max_length=200)
+
 class covid_data(models.Model):
     class Meta:
         unique_together = (('date_value', 'country_code'),)
