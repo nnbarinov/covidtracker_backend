@@ -16,15 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import SimpleRouter 
-from covidtracker.views import covid_dataViewSet, CountriesViewSet
+from covidtracker.views import covid_dataViewSet, CountriesViewSet, hello_world
 
 router = SimpleRouter()
 
 router.register(r'data', covid_dataViewSet)
 router.register(r'countries', CountriesViewSet)
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('renew/', hello_world)
 ]
 
 urlpatterns += router.urls
