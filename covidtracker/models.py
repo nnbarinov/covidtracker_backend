@@ -5,7 +5,8 @@ class Countries(models.Model):
     country_code = models.CharField(max_length=4)
     country_name = models.CharField(max_length=200)
 
-class covid_data(models.Model):
+class CVData(models.Model):
+    uni_key           = models.CharField(max_length=14,primary_key=True)
     date_value        = models.DateField()
     country_code      = models.CharField(max_length=4)
     confirmed         = models.IntegerField()

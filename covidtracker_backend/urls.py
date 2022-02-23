@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import SimpleRouter 
-from covidtracker.views import covid_dataViewSet, CountriesViewSet, renew_data
+from covidtracker.views import CVDataViewSet, CountriesViewSet, renew_data
 
 router = SimpleRouter()
 
-router.register(r'data', covid_dataViewSet)
+router.register(r'data', CVDataViewSet)
 router.register(r'countries', CountriesViewSet)
 
 
