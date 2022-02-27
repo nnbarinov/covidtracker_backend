@@ -1,6 +1,6 @@
-FROM python:3.10-alpine
+FROM python:3.10.2-alpine
 
-ENV PYTHONDONTWRITEBYTECODE 1
+RUN apk add gcc musl-dev mariadb-connector-c-dev
 
 WORKDIR /app
 COPY . /app/

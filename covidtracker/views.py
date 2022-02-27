@@ -1,5 +1,5 @@
 import requests
-import covidtracker
+import os
 from covidtracker.models import CVData, Countries
 from covidtracker.serialaizers import CVDataSerialaizer, CountriesSerialaizer
 from rest_framework.viewsets import ModelViewSet
@@ -8,7 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import sqlite3
+import mariadb
 from datetime import date, timedelta
 import requests
 
@@ -28,17 +28,22 @@ class CountriesViewSet(ModelViewSet):
     ordering_fields = ['country_name']
 
 def get_data():
-    conn = sqlite3.connect("db.sqlite3")
-    first_date = '2022-02-01'
+    conn = mariadb.connect(
+    user=os.environ.get('DB_USER'),
+    password=os.environ.get('DB_PASS'),
+    host=os.environ.get('DB_HOST'),
+    database=os.environ.get('DB_NAME'))
+    cur = conn.cursor() 
+    first_date = date.today() - timedelta(days=50)
     renew_date = date.today()
-    query = 'https://covidtrackerapi.bsg.ox.ac.uk/api/v2/stringency/date-range/' + first_date + '/' + str(renew_date)
+    query = 'https://covidtrackerapi.bsg.ox.ac.uk/api/v2/stringency/date-range/' + str(first_date) + '/' + str(renew_date)
     resp = requests.get(query)
     resp = resp.json()
     resp = resp['data']
    
     for dkey in resp:
         for country in resp[dkey]:
-            conn.execute("replace INTO covidtracker_CVData VALUES (?, ?, ?, ?, ?, ?, ?)", 
+            cur.execute("replace INTO covidtracker_CVData VALUES (?, ?, ?, ?, ?, ?, ?)", 
             (
             str(resp[dkey][country]['date_value'])+str(resp[dkey][country]['country_code']),
             str(resp[dkey][country]['date_value']), 

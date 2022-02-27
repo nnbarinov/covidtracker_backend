@@ -1,0 +1,14 @@
+.git
+.cache
+.gitignore
+.gitlab-ci.yml
+.kube
+.helm
+
+__pycache__/
+*.py[cod]
+
+# Editor files
+.vscode/
+
+/front
